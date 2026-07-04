@@ -127,3 +127,4 @@ Restart the backend after editing the file.
 | GET    | `/api/players` | List of all players (id, name, team) for autocomplete |
 | POST   | `/api/guess`   | Body `{ "name": "Player Name" }` → comparison result |
 | GET    | `/api/reveal`  | Returns today's answer (used at game end)         |
+# nba-guess-who
