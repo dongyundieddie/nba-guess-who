@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
+
 const MAX_GUESSES = 8;
 const MAX_HINTS = 3;
 const FLIP_STEP_SECONDS = 0.12;
@@ -125,7 +127,7 @@ export default function App() {
   const [hintLoading, setHintLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/players")
+    fetch(`${API_URL}/api/players`)
       .then((r) => r.json())
       .then(setAllPlayers)
       .catch(() => setError("Could not load player list. Is the backend running?"));
@@ -159,7 +161,7 @@ export default function App() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/api/guess", {
+      const res = await fetch(`${API_URL}/api/guess`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: trimmed }),
@@ -188,7 +190,7 @@ export default function App() {
         newReveal = data.guessedPlayer;
       } else if (!DEBUG_UNLIMITED_GUESSES && newGuesses.length >= MAX_GUESSES) {
         newStatus = "lost";
-        const revealRes = await fetch("/api/reveal");
+        const revealRes = await fetch(`${API_URL}/api/reveal`);
         const revealData = await revealRes.json();
         newReveal = revealData.player;
       }
@@ -240,7 +242,7 @@ export default function App() {
     setError("");
     try {
       const nextIndex = unlockedHints.length + 1;
-      const res = await fetch(`/api/hint/${nextIndex}`);
+      const res = await fetch(`${API_URL}/api/hint/${nextIndex}`);
       const data = await res.json();
 
       if (!res.ok) {

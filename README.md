@@ -71,7 +71,7 @@ cd "../client"
 npm install
 ```
 
-### 2. Start the backend (port 3001)
+### 2. Start the backend (port 10000)
 
 ```bash
 cd server
@@ -81,7 +81,7 @@ npm run dev
 You should see:
 
 ```
-NBA Guess Who API listening on http://localhost:3001
+NBA Guess Who API listening on http://localhost:10000
 ```
 
 ### 3. Start the frontend (port 5173)
@@ -94,9 +94,35 @@ npm run dev
 ```
 
 Vite will print a local URL, typically `http://localhost:5173`. Open it
-in your browser — the dev server proxies `/api/*` requests to the
-backend automatically (see `client/vite.config.js`), so no extra CORS
-setup is needed.
+in your browser — the frontend calls the backend using an absolute URL
+built from `VITE_API_URL` (see [Environment variables](#environment-variables)
+below), so the backend can run on a different host/port or be deployed
+separately without any code changes.
+
+## Environment variables
+
+The frontend never hardcodes `localhost` in its API calls. Instead it
+reads `VITE_API_URL` at build time and falls back to
+`http://localhost:10000` if it's not set:
+
+```js
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
+```
+
+This is wired up via two Vite env files in `client/`:
+
+- `.env.development` → `VITE_API_URL=http://localhost:10000` (used by `npm run dev`)
+- `.env.production` → `VITE_API_URL=https://nba-guess-who.onrender.com` (used by `npm run build`)
+
+If you deploy the frontend to a host that builds from source (Vercel,
+Netlify, etc.), set `VITE_API_URL` as a build environment variable there
+too — a real environment variable always overrides the committed
+`.env.production` value.
+
+The deployed backend lives at `https://nba-guess-who.onrender.com`
+(Render). Locally the backend still defaults to port `10000`
+(`process.env.PORT || 10000` in `server/server.js`), matching the
+frontend's local default so the two line up out of the box.
 
 ## Adding / editing players
 
@@ -122,9 +148,10 @@ Restart the backend after editing the file.
 
 ## API reference
 
-| Method | Endpoint       | Description                                      |
-| ------ | -------------- | ------------------------------------------------- |
-| GET    | `/api/players` | List of all players (id, name, team) for autocomplete |
-| POST   | `/api/guess`   | Body `{ "name": "Player Name" }` → comparison result |
-| GET    | `/api/reveal`  | Returns today's answer (used at game end)         |
+| Method | Endpoint         | Description                                      |
+| ------ | ---------------- | ------------------------------------------------- |
+| GET    | `/api/players`   | List of all players (id, name, team, position, image) for autocomplete |
+| POST   | `/api/guess`     | Body `{ "name": "Player Name" }` → comparison result |
+| GET    | `/api/hint/:index` | `index` is 1, 2, or 3 → one clue about today's answer |
+| GET    | `/api/reveal`    | Returns today's answer (used at game end)         |
 # nba-guess-who
