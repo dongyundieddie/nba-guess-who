@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01c88577-3a8e-4226-a5aa-fb62ddb6c0d9",
+    "nickname": "TestPlayer",
+    "score": 1000,
+    "guesses": 1,
+    "hintsUsed": 0,
+    "mode": "daily",
+    "createdAt": "2026-07-06T15:54:47.221Z"
+  },
+  {
+    "id": "5e0630df-1ff2-4f51-9c30-c9470ecac6ee",
+    "nickname": "hayssteph",
+    "score": 920,
+    "guesses": 2,
+    "hintsUsed": 0,
+    "mode": "unlimited",
+    "createdAt": "2026-07-06T16:04:06.044Z"
+  },
+  {
+    "id": "b91f43b6-493c-41f1-9aef-61f656d2ecd2",
+    "nickname": "haysjames",
+    "score": 740,
+    "guesses": 3,
+    "hintsUsed": 1,
+    "mode": "unlimited",
+    "createdAt": "2026-07-06T16:07:33.546Z"
+  },
+  {
+    "id": "38a0816f-fc06-42c5-b475-0296d9edafe4",
+    "nickname": "haysjames",
+    "score": 1000,
+    "guesses": 1,
+    "hintsUsed": 0,
+    "mode": "unlimited",
+    "createdAt": "2026-07-07T03:44:52.990Z"
+  }
+]
